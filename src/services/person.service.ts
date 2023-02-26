@@ -1,32 +1,8 @@
-export default class PersonService implements Service<RawPerson> {
-  public readonly tableName = "Persons";
+import Service from "./service";
 
-  public spreadsheet;
-  public sheet!: GoogleAppsScript.Spreadsheet.Sheet;
-
+export default class PersonService extends Service<RawPerson> {
   public constructor() {
-    this.spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-    const sheet = this.spreadsheet.getSheetByName(this.tableName);
-    if (!sheet) throw new Error("Sheet not found");
-  }
-
-  public getAll(): RawPerson[] {
-    const data = this.sheet.getDataRange().getValues();
-    const items = data.slice(1).map(this.buildData);
-
-    return items;
-  }
-
-  public get(id: string): RawPerson | null {
-    const matchCell = this.sheet
-      .getRange("A:A")
-      .createTextFinder(id)
-      .findNext();
-    if (!matchCell) return null;
-
-    const rowIndex = matchCell.getRowIndex();
-    const row = this.sheet.getRange(`${rowIndex}:${rowIndex}`);
-    return this.buildData(row.getValues()[0]);
+    super("Persons");
   }
 
   public buildData(data: string[]): RawPerson {
