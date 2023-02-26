@@ -1,12 +1,12 @@
 export default class OrganizationService implements Service<RawOrganization> {
-  protected readonly TABLE_NAME = "Organizations";
+  public readonly tableName = "Organizations";
 
   public spreadsheet;
   public sheet!: GoogleAppsScript.Spreadsheet.Sheet;
 
   public constructor() {
     this.spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-    const sheet = this.spreadsheet.getSheetByName(this.TABLE_NAME);
+    const sheet = this.spreadsheet.getSheetByName(this.tableName);
     if (!sheet) throw new Error("Sheet not found");
   }
 

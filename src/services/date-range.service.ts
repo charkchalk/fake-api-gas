@@ -1,12 +1,12 @@
 export default class DateRangeService implements Service<RawDateRange> {
-  protected readonly TABLE_NAME = "DateRanges";
+  public readonly tableName = "DateRanges";
 
   public spreadsheet;
   public sheet!: GoogleAppsScript.Spreadsheet.Sheet;
 
   public constructor() {
     this.spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-    const sheet = this.spreadsheet.getSheetByName(this.TABLE_NAME);
+    const sheet = this.spreadsheet.getSheetByName(this.tableName);
     if (!sheet) throw new Error("Sheet not found");
   }
 

@@ -1,12 +1,12 @@
 export default class PlaceService implements Service<RawPlace> {
-  protected readonly TABLE_NAME = "Places";
+  public readonly tableName = "Places";
 
   public spreadsheet;
   public sheet!: GoogleAppsScript.Spreadsheet.Sheet;
 
   public constructor() {
     this.spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-    const sheet = this.spreadsheet.getSheetByName(this.TABLE_NAME);
+    const sheet = this.spreadsheet.getSheetByName(this.tableName);
     if (!sheet) throw new Error("Sheet not found");
   }
 

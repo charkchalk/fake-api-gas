@@ -1,12 +1,12 @@
 export default class TimeRangeService implements Service<RawTimeRange> {
-  protected readonly TABLE_NAME = "TimeRanges";
+  public readonly tableName = "TimeRanges";
 
   public spreadsheet;
   public sheet!: GoogleAppsScript.Spreadsheet.Sheet;
 
   public constructor() {
     this.spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-    const sheet = this.spreadsheet.getSheetByName(this.TABLE_NAME);
+    const sheet = this.spreadsheet.getSheetByName(this.tableName);
     if (!sheet) throw new Error("Sheet not found");
   }
 
