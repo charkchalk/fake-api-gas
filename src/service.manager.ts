@@ -9,12 +9,14 @@ import TimeRangeService from "./services/time-range.service";
 import CoursesPlacesRelationService from "./relation-services/courses-places.relation-service";
 import CoursesTimeRangesRelationService from "./relation-services/courses-timeRanges.relation-service";
 import Service from "./services/service";
+import CourseService from "./services/course.service";
 
 export default class ServiceManager {
   public services: Service[] = [];
   public relationServices: RelationService[] = [];
 
   public constructor() {
+    this.services.push(new CourseService(this));
     this.services.push(new DateRangeService());
     this.services.push(new OrganizationService());
     this.services.push(new PersonService());
