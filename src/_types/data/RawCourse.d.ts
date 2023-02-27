@@ -8,17 +8,17 @@ interface RawCourse {
   /** 課程敘述 */
   description: string;
   /** 修課類型 */
-  type: RawTag;
+  type: RawTag | null;
   /** 學分數 */
   credit: number;
   /** 開課單位 */
-  organization: RawOrganization;
+  organization: RawOrganization | null;
   /** 講師、負責人 */
   hosts: RawPerson[];
   /** 上課地點 */
   places: RawPlace[];
   /** 日期範圍 */
-  dateRange: RawDateRange;
+  dateRange: RawDateRange | null;
   /** 時間範圍 */
   timeRanges: RawTimeRange[];
   /** 原系統頁面 */

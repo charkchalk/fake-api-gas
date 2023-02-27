@@ -20,15 +20,12 @@ export default class CourseService extends Service<RawCourse> {
     ] = data;
 
     const type = this.serviceManager.getService<RawTag>("Tags").get(typeId);
-    if (!type) throw new Error("Type not found");
     const organization = this.serviceManager
       .getService<RawOrganization>("Organizations")
       .get(organizationId);
-    if (!organization) throw new Error("Organization not found");
     const dateRange = this.serviceManager
       .getService<RawDateRange>("DateRanges")
       .get(dateRangeId);
-    if (!dateRange) throw new Error("DateRange not found");
     const hosts = this.getHosts(id);
     const places = this.getPlaces(id);
     const timeRanges = this.getTimeRanges(id);
