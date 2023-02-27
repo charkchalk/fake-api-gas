@@ -9,7 +9,7 @@ global.doGet = function (
   const serviceManager = new ServiceManager();
   const routes = [
     {
-      route: "/course/:id",
+      route: "course/:id",
       handler: (
         params: { [key: string]: string[] },
         urlParams: { [k: string]: string },
@@ -20,7 +20,7 @@ global.doGet = function (
       },
     },
     {
-      route: "/course",
+      route: "course",
       handler: (): RawCourse[] => {
         const service = serviceManager.getService<RawCourse>("Courses");
         const items = service.getAll();
@@ -28,7 +28,7 @@ global.doGet = function (
       },
     },
     {
-      route: "/range/date/:id",
+      route: "range/date/:id",
       handler: (
         params: { [key: string]: string[] },
         urlParams: { [k: string]: string },
@@ -39,7 +39,7 @@ global.doGet = function (
       },
     },
     {
-      route: "/range/date",
+      route: "range/date",
       handler: (): RawDateRange[] => {
         const service = serviceManager.getService<RawDateRange>("DateRange");
         const items = service.getAll();
@@ -47,7 +47,7 @@ global.doGet = function (
       },
     },
     {
-      route: "/organization/:id",
+      route: "organization/:id",
       handler: (
         params: { [key: string]: string[] },
         urlParams: { [k: string]: string },
@@ -59,7 +59,7 @@ global.doGet = function (
       },
     },
     {
-      route: "/organization",
+      route: "organization",
       handler: (): RawOrganization[] => {
         const service =
           serviceManager.getService<RawOrganization>("Organization");
@@ -68,7 +68,7 @@ global.doGet = function (
       },
     },
     {
-      route: "/person/:id",
+      route: "person/:id",
       handler: (
         params: { [key: string]: string[] },
         urlParams: { [k: string]: string },
@@ -79,7 +79,7 @@ global.doGet = function (
       },
     },
     {
-      route: "/person",
+      route: "person",
       handler: (): RawPerson[] => {
         const service = serviceManager.getService<RawPerson>("Persons");
         const items = service.getAll();
@@ -87,7 +87,7 @@ global.doGet = function (
       },
     },
     {
-      route: "/place/:id",
+      route: "place/:id",
       handler: (
         params: { [key: string]: string[] },
         urlParams: { [k: string]: string },
@@ -98,7 +98,7 @@ global.doGet = function (
       },
     },
     {
-      route: "/place",
+      route: "place",
       handler: (): RawPlace[] => {
         const service = serviceManager.getService<RawPlace>("Places");
         const items = service.getAll();
@@ -106,7 +106,7 @@ global.doGet = function (
       },
     },
     {
-      route: "/tag/:id",
+      route: "tag/:id",
       handler: (
         params: { [key: string]: string[] },
         urlParams: { [k: string]: string },
@@ -117,7 +117,7 @@ global.doGet = function (
       },
     },
     {
-      route: "/tag",
+      route: "tag",
       handler: (): RawTag[] => {
         const service = serviceManager.getService<RawTag>("Tags");
         const items = service.getAll();
@@ -125,7 +125,7 @@ global.doGet = function (
       },
     },
     {
-      route: "/range/time/:id",
+      route: "range/time/:id",
       handler: (
         params: { [key: string]: string[] },
         urlParams: { [k: string]: string },
@@ -136,7 +136,7 @@ global.doGet = function (
       },
     },
     {
-      route: "/range/time",
+      route: "range/time",
       handler: (): RawTimeRange[] => {
         const service = serviceManager.getService<RawTimeRange>("TimeRange");
         const items = service.getAll();
