@@ -8,6 +8,7 @@ import TagService from "./services/tag.service";
 import TimeRangeService from "./services/time-range.service";
 import CoursesPlacesRelationService from "./relation-services/courses-places.relation-service";
 import CoursesTimeRangesRelationService from "./relation-services/courses-timeRanges.relation-service";
+import Service from "./services/service";
 
 export default class ServiceManager {
   public services: Service[] = [];

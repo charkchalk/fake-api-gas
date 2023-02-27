@@ -1,4 +1,4 @@
-export default abstract class Service<T> implements Service<T> {
+export default abstract class Service<T = unknown> {
   public spreadsheet;
   public sheet!: GoogleAppsScript.Spreadsheet.Sheet;
 
