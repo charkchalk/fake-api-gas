@@ -11,16 +11,31 @@ export default abstract class RelationService {
 
   public getBy(key: string, id: string): Relation[] {
     const matched = this.sheet.getRange("1:1").createTextFinder(key).findNext();
-    if (!matched) return [];
+    if (!matched) {
+      Logger.log(
+        "No matched key found in relation %s in %s",
+        key,
+        this.tableName,
+      );
+      return [];
+    }
 
     const header = this.sheet.getRange("1:1").getDisplayValues()[0];
 
-    const matchedColumn = matched.getA1Notation().slice(-1);
+    const matchedColumn = matched.getA1Notation().slice(0, -1);
 
+    Logger.log(
+      "Searching relation of %s in %s column of %s",
+      id,
+      matchedColumn,
+      this.tableName,
+    );
     const matchedCells = this.sheet
       .getRange(`${matchedColumn}:${matchedColumn}`)
       .createTextFinder(id)
       .findAll();
+
+    Logger.log("Matched cells: %s", matchedCells.length);
 
     const related: Relation[] = matchedCells.map(cell => {
       const rowIndex = cell.getRowIndex();
