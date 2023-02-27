@@ -10,7 +10,7 @@ export default abstract class Service<T = unknown> {
   }
 
   public getAll(): T[] {
-    const data = this.sheet.getDataRange().getValues();
+    const data = this.sheet.getDataRange().getDisplayValues();
     const courses = data.slice(1).map(values => this.buildData(values));
 
     return courses;
@@ -26,7 +26,7 @@ export default abstract class Service<T = unknown> {
 
     const rowIndex = matchCell.getRowIndex();
     const row = this.sheet.getRange(`${rowIndex}:${rowIndex}`);
-    return this.buildData(row.getValues()[0]);
+    return this.buildData(row.getDisplayValues()[0]);
   }
 
   public abstract buildData(data: string[]): T;
