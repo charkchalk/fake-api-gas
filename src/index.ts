@@ -153,7 +153,10 @@ global.doGet = function (
     Logger.log("Result: %s", JSON.stringify(result));
     if (!result) {
       return ContentService.createTextOutput(
-        JSON.stringify({ code: "404" }),
+        JSON.stringify({
+          code: "404",
+          description: "No corresponding data found in collection.",
+        }),
       ).setMimeType(ContentService.MimeType.JSON);
     }
 
@@ -177,6 +180,10 @@ global.doGet = function (
   }
 
   return ContentService.createTextOutput(
-    JSON.stringify({ code: "404" }),
+    JSON.stringify({
+      code: "404",
+      description: "No any route matched.",
+      data: event.pathInfo,
+    }),
   ).setMimeType(ContentService.MimeType.JSON);
 };
