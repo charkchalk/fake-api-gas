@@ -11,12 +11,13 @@ export default abstract class Service<T = unknown> {
 
   public getAll(): T[] {
     const data = this.sheet.getDataRange().getValues();
-    const courses = data.slice(1).map(this.buildData);
+    const courses = data.slice(1).map(values => this.buildData(values));
 
     return courses;
   }
 
   public get(id: string): T | null {
+    if (!id) return null;
     const matchCell = this.sheet
       .getRange("A:A")
       .createTextFinder(id)
