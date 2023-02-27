@@ -1,1 +1,1 @@
-declare function doGet(): void;
+declare function doGet(event: GoogleAppsScript.Events.DoGet): void;
