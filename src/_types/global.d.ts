@@ -1,1 +1,3 @@
-declare function doGet(event: GoogleAppsScript.Events.DoGet): void;
+declare function doGet(
+  event: GoogleAppsScript.Events.DoGet,
+): GoogleAppsScript.Content.TextOutput;

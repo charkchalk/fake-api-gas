@@ -3,7 +3,7 @@ import ServiceManager from "./service.manager";
 
 global.doGet = function (
   event: GoogleAppsScript.Events.AppsScriptHttpRequestEvent,
-): void {
+): GoogleAppsScript.Content.TextOutput {
   Logger.log("Starting...");
 
   const serviceManager = new ServiceManager();
@@ -152,10 +152,9 @@ global.doGet = function (
     const result = route.handler(event.parameters, match);
     Logger.log("Result: %s", JSON.stringify(result));
     if (!result) {
-      ContentService.createTextOutput(
+      return ContentService.createTextOutput(
         JSON.stringify({ code: "404" }),
       ).setMimeType(ContentService.MimeType.JSON);
-      return;
     }
 
     const rowPerPage = parseInt(event.parameter.size ?? 20);
@@ -172,13 +171,12 @@ global.doGet = function (
       pagination: { total, current },
     };
 
-    ContentService.createTextOutput(JSON.stringify(response)).setMimeType(
-      ContentService.MimeType.JSON,
-    );
-    return;
+    return ContentService.createTextOutput(
+      JSON.stringify(response),
+    ).setMimeType(ContentService.MimeType.JSON);
   }
 
-  ContentService.createTextOutput(JSON.stringify({ code: "404" })).setMimeType(
-    ContentService.MimeType.JSON,
-  );
+  return ContentService.createTextOutput(
+    JSON.stringify({ code: "404" }),
+  ).setMimeType(ContentService.MimeType.JSON);
 };
