@@ -51,17 +51,17 @@ export default class CourseService extends Service<RawCourse> {
       .getRelationService("Courses-Persons")
       .getBy("Course", courseId);
 
-    return keys.map(key => key.Teacher);
+    return keys.map(key => key.Person);
   }
 
   public getHosts(courseId: string): RawPerson[] {
     const personService = this.serviceManager.getService<RawPerson>("Persons");
-    const teacherIds = this.getHostIds(courseId);
-    const teachers = teacherIds
-      .map(teacherId => personService.get(teacherId))
-      .filter(teacher => !!teacher);
+    const personIds = this.getHostIds(courseId);
+    const persons = personIds
+      .map(personId => personService.get(personId))
+      .filter(person => !!person);
 
-    return teachers as RawPerson[];
+    return persons as RawPerson[];
   }
 
   private getPlaceIds(courseId: string): string[] {
