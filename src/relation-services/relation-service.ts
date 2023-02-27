@@ -1,11 +1,12 @@
 export default abstract class RelationService {
   public spreadsheet;
-  public sheet!: GoogleAppsScript.Spreadsheet.Sheet;
+  public sheet: GoogleAppsScript.Spreadsheet.Sheet;
 
   public constructor(public readonly tableName: string) {
     this.spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
     const sheet = this.spreadsheet.getSheetByName(this.tableName);
     if (!sheet) throw new Error("Sheet not found");
+    this.sheet = sheet;
   }
 
   public getBy(key: string, id: string): Relation[] {
