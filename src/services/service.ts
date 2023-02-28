@@ -9,9 +9,14 @@ export default abstract class Service<T = unknown> {
     this.sheet = sheet;
   }
 
-  public getAll(): T[] {
+  public getAll(pagination: CanPaginate): (T | null)[] {
     const data = this.sheet.getDataRange().getDisplayValues();
-    const courses = data.slice(1).map(values => this.buildData(values));
+    const courses = data.slice(1).map((values, index) => {
+      if (index < (pagination.page - 1) * pagination.size) return null;
+      if (index > pagination.page * pagination.size) return null;
+
+      return this.buildData(values);
+    });
 
     return courses;
   }
