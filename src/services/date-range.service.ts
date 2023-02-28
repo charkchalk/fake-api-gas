@@ -5,6 +5,10 @@ export default class DateRangeService extends Service<RawDateRange> {
     super("DateRanges");
   }
 
+  public isDataValid(data: string[]): boolean {
+    return data.every(value => value !== "");
+  }
+
   public buildData(data: string[]): RawDateRange {
     const [id, name, description, start, end] = data;
 

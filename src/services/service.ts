@@ -1,6 +1,7 @@
 export default abstract class Service<T = unknown> {
   public spreadsheet;
   public sheet: GoogleAppsScript.Spreadsheet.Sheet;
+  public offset = 0;
 
   public constructor(public readonly tableName: string) {
     this.spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
@@ -12,13 +13,25 @@ export default abstract class Service<T = unknown> {
   public getAll(pagination: CanPaginate): (T | null)[] {
     const data = this.sheet.getDataRange().getDisplayValues();
     const courses = data.slice(1).map((values, index) => {
-      if (index < (pagination.page - 1) * pagination.size) return null;
-      if (index > pagination.page * pagination.size) return null;
+      if (!this.isDataValid(values)) {
+        this.offset++;
+        return null;
+      }
+      if (index < (pagination.page - 1) * pagination.size + this.offset)
+        return null;
+      if (index >= pagination.page * pagination.size + this.offset) return null;
 
-      return this.buildData(values);
+      const data = this.buildData(values);
+      if (!data) this.offset++;
+
+      return data;
     });
 
     return courses;
+  }
+
+  public getOffset(): number {
+    return this.offset;
   }
 
   public get(id: string): T | null {
@@ -34,5 +47,6 @@ export default abstract class Service<T = unknown> {
     return this.buildData(row.getDisplayValues()[0]);
   }
 
-  public abstract buildData(data: string[]): T;
+  public abstract isDataValid(data: string[]): boolean;
+  public abstract buildData(data: string[]): T | null;
 }

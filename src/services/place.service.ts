@@ -5,6 +5,10 @@ export default class PlaceService extends Service<RawPlace> {
     super("Places");
   }
 
+  public isDataValid(data: string[]): boolean {
+    return data[1] !== "";
+  }
+
   public buildData(data: string[]): RawPlace {
     const [id, name, parentId] = data;
     const parent = parentId ? this.get(parentId) : null;

@@ -5,6 +5,10 @@ export default class OrganizationService extends Service<RawOrganization> {
     super("Organizations");
   }
 
+  public isDataValid(data: string[]): boolean {
+    return data[1] !== "";
+  }
+
   public buildData(data: string[]): RawOrganization {
     const [id, name, description] = data;
 

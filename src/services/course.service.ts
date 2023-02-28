@@ -6,6 +6,10 @@ export default class CourseService extends Service<RawCourse> {
     super("Courses");
   }
 
+  public isDataValid(data: string[]): boolean {
+    return data[2] !== "";
+  }
+
   public buildData(data: string[]): RawCourse {
     const [
       id,

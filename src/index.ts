@@ -7,7 +7,7 @@ global.doGet = function (
   Logger.log("Starting...");
 
   const serviceManager = new ServiceManager();
-  const routes = [
+  const routes: RouteHandler[] = [
     {
       route: "course/:id",
       handler: (
@@ -174,7 +174,7 @@ global.doGet = function (
 
     const response: StandardResponse = {
       content: Array.isArray(result)
-        ? result.slice(size * (page - 1), size * page)
+        ? result.filter(value => value !== null)
         : result,
       pagination: { total, current: page },
     };
