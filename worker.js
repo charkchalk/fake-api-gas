@@ -22,14 +22,17 @@ async function handleRequest(request) {
   request = new Request(apiUrl, request);
   let response = await fetch(request);
 
-  request = new Request(apiUrl, request);
+  // Get redirected page content
   response = await fetch(response.headers.get("location"));
 
   // Recreate the response so you can modify the headers
   response = new Response(response.body, response);
 
   // Set CORS headers
-  response.headers.set("Access-Control-Allow-Origin", url.origin);
+  response.headers.set(
+    "Access-Control-Allow-Origin",
+    new URL(request.headers.get("Origin")).origin,
+  );
 
   // Append to/Add Vary header so browser will cache response correctly
   response.headers.append("Vary", "Origin");
@@ -41,6 +44,7 @@ function handleOptions(request) {
   // Make sure the necessary headers are present
   // for this to be a valid pre-flight request
   let headers = request.headers;
+
   if (
     headers.get("Origin") !== null &&
     headers.get("Access-Control-Request-Method") !== null &&
