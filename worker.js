@@ -16,8 +16,14 @@ const API_URL =
 async function handleRequest(request) {
   const url = new URL(request.url);
   const params = new URLSearchParams(url.search);
-  params.set("path", url.pathname.slice(1));
-  let apiUrl = API_URL + "?" + params.toString() + url.hash;
+
+  let apiUrl = API_URL;
+  const path = url.pathname.slice(1);
+  if (path !== "") {
+    params.set("path", url.pathname.slice(1));
+    apiUrl += "?" + params.toString();
+  }
+  if (url.hash !== "") apiUrl += url.hash;
 
   request = new Request(apiUrl, request);
   let response = await fetch(request);
@@ -29,10 +35,7 @@ async function handleRequest(request) {
   response = new Response(response.body, response);
 
   // Set CORS headers
-  response.headers.set(
-    "Access-Control-Allow-Origin",
-    new URL(request.headers.get("Origin")).origin,
-  );
+  response.headers.set("Access-Control-Allow-Origin", "*");
 
   // Append to/Add Vary header so browser will cache response correctly
   response.headers.append("Vary", "Origin");
