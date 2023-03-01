@@ -30,10 +30,6 @@ export default abstract class Service<T = unknown> {
     return courses;
   }
 
-  public getOffset(): number {
-    return this.offset;
-  }
-
   public get(id: string): T | null {
     if (!id) return null;
     const matchCell = this.sheet

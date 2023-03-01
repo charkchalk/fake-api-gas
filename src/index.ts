@@ -4,8 +4,6 @@ import ServiceManager from "./service.manager";
 global.doGet = function (
   event: GoogleAppsScript.Events.AppsScriptHttpRequestEvent,
 ): GoogleAppsScript.Content.TextOutput {
-  Logger.log("Starting...");
-
   const serviceManager = new ServiceManager();
   const routes: RouteHandler[] = [
     {
@@ -160,7 +158,6 @@ global.doGet = function (
     const page = parseInt(event.parameter.page ?? 1);
 
     const result = route.handler({ size, page }, event.parameters, match);
-    Logger.log("Result: %s", JSON.stringify(result));
     if (!result) {
       return ContentService.createTextOutput(
         JSON.stringify({
