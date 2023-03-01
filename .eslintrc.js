@@ -8,7 +8,7 @@ module.exports = {
     "plugin:@typescript-eslint/recommended",
     "prettier",
   ],
-  ignorePatterns: ["node_modules/", "dist/", ".eslintrc.js"],
+  ignorePatterns: ["node_modules/", "dist/", ".eslintrc.js", "worker.js"],
   parser: "@typescript-eslint/parser",
   parserOptions: {
     project: "tsconfig.json",
