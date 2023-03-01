@@ -153,7 +153,7 @@ global.doGet = function (
   ];
 
   for (const route of routes) {
-    const match = new Route(route.route).match(event.pathInfo);
+    const match = new Route(route.route).match(event.parameter.path);
     if (!match) continue;
 
     const size = parseInt(event.parameter.size ?? 10);
