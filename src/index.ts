@@ -1,8 +1,22 @@
 import * as Route from "route-parser";
 import ServiceManager from "./service.manager";
 
+// global.test = function (): void {
+//   doPost({
+//     parameter: {
+//       path: "course/search",
+//       size: 20,
+//       page: 1,
+//     },
+//     postData: {
+//       contents:
+//         '[{"key":"teacher","method":"=","value":["097648ba-6a56-44e3-a1f0-c240a26408bd","6689bc50-4aa5-43f4-863c-3aa4fc3f7849"]}]',
+//     },
+//   } as unknown as GoogleAppsScript.Events.DoPost);
+// };
+
 global.doGet = function (
-  event: GoogleAppsScript.Events.AppsScriptHttpRequestEvent,
+  event: GoogleAppsScript.Events.DoGet,
 ): GoogleAppsScript.Content.TextOutput {
   const serviceManager = new ServiceManager();
   const routes: RouteHandler[] = [
@@ -176,6 +190,66 @@ global.doGet = function (
       pagination: { total, current: page },
     };
 
+    return ContentService.createTextOutput(
+      JSON.stringify(response),
+    ).setMimeType(ContentService.MimeType.JSON);
+  }
+
+  return ContentService.createTextOutput(
+    JSON.stringify({
+      code: "404",
+      description: "No any route matched.",
+      data: event.pathInfo,
+    }),
+  ).setMimeType(ContentService.MimeType.JSON);
+};
+
+global.doPost = function (
+  event: GoogleAppsScript.Events.DoPost,
+): GoogleAppsScript.Content.TextOutput {
+  const serviceManager = new ServiceManager();
+  const routes = [
+    {
+      route: "course/search",
+      handler: (
+        pagination: CanPaginate,
+        postData: unknown,
+      ): (RawCourse | null)[] => {
+        const service = serviceManager.getService<RawCourse>("Courses");
+        const items = service.getAll(pagination, postData);
+        return items;
+      },
+    },
+  ];
+
+  for (const route of routes) {
+    const match = new Route(route.route).match(event.parameter.path);
+    if (!match) continue;
+
+    const size = parseInt(event.parameter.size ?? 10);
+    const page = parseInt(event.parameter.page ?? 1);
+    const postData = JSON.parse(event.postData.contents);
+
+    const result = route.handler({ size, page }, postData);
+    if (!result) {
+      return ContentService.createTextOutput(
+        JSON.stringify({
+          code: "404",
+          description: "No corresponding data found in collection.",
+        }),
+      ).setMimeType(ContentService.MimeType.JSON);
+    }
+
+    const total = Array.isArray(result) ? Math.ceil(result.length / size) : 1;
+
+    const response: StandardResponse = {
+      content: Array.isArray(result)
+        ? result.filter(value => value !== null)
+        : result,
+      pagination: { total, current: page },
+    };
+
+    // Logger.log(response);
     return ContentService.createTextOutput(
       JSON.stringify(response),
     ).setMimeType(ContentService.MimeType.JSON);

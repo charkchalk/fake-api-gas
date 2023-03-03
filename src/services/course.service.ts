@@ -6,13 +6,30 @@ export default class CourseService extends Service<RawCourse> {
     super("Courses");
   }
 
+  public getAll(
+    pagination: CanPaginate,
+    postData: QueryItem[],
+  ): (RawCourse | null)[] {
+    const data = this.sheet.getDataRange().getDisplayValues();
+    const courses = data.slice(1).map((values, index) => {
+      if (index < (pagination.page - 1) * pagination.size) return null;
+      if (index >= pagination.page * pagination.size) return null;
+
+      const data = this.buildData(values, postData);
+
+      return data;
+    });
+
+    return courses;
+  }
+
   public isDataValid(data: string[]): boolean {
     return data[2] !== "";
   }
 
-  public buildData(data: string[]): RawCourse {
+  public buildData(data: string[], postData: QueryItem[]): RawCourse | null {
     const [
-      id,
+      courseId,
       code,
       name,
       description,
@@ -23,6 +40,29 @@ export default class CourseService extends Service<RawCourse> {
       link,
     ] = data;
 
+    const keywordQueries = postData.filter(query => query.key === "keyword");
+    if (keywordQueries.length > 0) {
+      for (const query of keywordQueries) {
+        const matches = query.value.map(value => name.includes(value));
+        // Logger.log("keyword queries: %s", query.value);
+        // Logger.log(
+        //   "keyword result: (Drop: %s) %s",
+        //   query.method == "="
+        //     ? !matches.includes(true)
+        //     : matches.includes(true),
+        //   matches,
+        // );
+        switch (query.method) {
+          case "=":
+            if (!matches.includes(true)) return null;
+            break;
+          case "!=":
+            if (matches.includes(true)) return null;
+            break;
+        }
+      }
+    }
+
     const type = this.serviceManager.getService<RawTag>("Tags").get(typeId);
     const organization = this.serviceManager
       .getService<RawOrganization>("Organizations")
@@ -30,12 +70,38 @@ export default class CourseService extends Service<RawCourse> {
     const dateRange = this.serviceManager
       .getService<RawDateRange>("DateRanges")
       .get(dateRangeId);
-    const hosts = this.getHosts(id);
-    const places = this.getPlaces(id);
-    const timeRanges = this.getTimeRanges(id);
+    const hostIds = this.getHostIds(courseId);
+
+    const teacherQueries = postData.filter(query => query.key === "teacher");
+    if (teacherQueries.length > 0) {
+      for (const query of teacherQueries) {
+        const matches = query.value.map(value => hostIds.includes(value));
+        // Logger.log("teacher queries: %s", query.value);
+        // Logger.log("teachers: %s", hostIds);
+        // Logger.log(
+        //   "teacher result: (Drop: %s) %s",
+        //   query.method == "="
+        //     ? !matches.includes(true)
+        //     : matches.includes(true),
+        //   matches,
+        // );
+        switch (query.method) {
+          case "=":
+            if (!matches.includes(true)) return null;
+            break;
+          case "!=":
+            if (matches.includes(true)) return null;
+            break;
+        }
+      }
+    }
+
+    const hosts = this.getHosts(hostIds);
+    const places = this.getPlaces(courseId);
+    const timeRanges = this.getTimeRanges(courseId);
 
     return {
-      id,
+      id: courseId,
       code,
       name,
       description,
@@ -58,9 +124,8 @@ export default class CourseService extends Service<RawCourse> {
     return keys.map(key => key.Person);
   }
 
-  public getHosts(courseId: string): RawPerson[] {
+  public getHosts(personIds: string[]): RawPerson[] {
     const personService = this.serviceManager.getService<RawPerson>("Persons");
-    const personIds = this.getHostIds(courseId);
     const persons = personIds
       .map(personId => personService.get(personId))
       .filter(person => !!person);
