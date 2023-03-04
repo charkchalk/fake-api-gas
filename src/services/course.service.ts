@@ -83,6 +83,20 @@ export default class CourseService extends Service<RawCourse> {
     )
       return null;
 
+    const dateRangeQueries = postData.filter(
+      query => query.key === "dateRange",
+    );
+    if (
+      dateRangeQueries.length > 0 &&
+      !this.isMatch(
+        dateRangeId,
+        "=",
+        dateRangeQueries,
+        (data, query) => data === query,
+      )
+    )
+      return null;
+
     const type = this.serviceManager.getService<RawTag>("Tags").get(typeId);
     const organization = this.serviceManager
       .getService<RawOrganization>("Organizations")
