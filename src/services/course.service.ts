@@ -125,9 +125,21 @@ export default class CourseService extends Service<RawCourse> {
     )
       return null;
 
+    const timeRangeIds = this.getTimeRangeIds(courseId);
+    const timeRangeQueries = postData.filter(
+      query => query.key === "timeRange",
+    );
+    if (
+      timeRangeQueries.length > 0 &&
+      !this.isMatch(timeRangeIds, "=", timeRangeQueries, (data, query) =>
+        data.includes(query),
+      )
+    )
+      return null;
+
     const hosts = this.getHosts(hostIds);
     const places = this.getPlaces(placeIds);
-    const timeRanges = this.getTimeRanges(courseId);
+    const timeRanges = this.getTimeRanges(timeRangeIds);
 
     return {
       id: courseId,
@@ -187,10 +199,9 @@ export default class CourseService extends Service<RawCourse> {
     return keys.map(key => key.TimeRange);
   }
 
-  public getTimeRanges(courseId: string): RawTimeRange[] {
+  public getTimeRanges(timeRangeIds: string[]): RawTimeRange[] {
     const timeRangeService =
       this.serviceManager.getService<RawTimeRange>("TimeRanges");
-    const timeRangeIds = this.getTimeRangeIds(courseId);
     const timeRanges = timeRangeIds
       .map(timeRangeId => timeRangeService.get(timeRangeId))
       .filter(timeRange => !!timeRange);
