@@ -76,6 +76,18 @@ export default class CourseService extends Service<RawCourse> {
     )
       return null;
 
+    const creditQueries = postData.filter(query => query.key === "credit");
+    if (
+      creditQueries.length > 0 &&
+      !this.isMatch(
+        credit,
+        "=",
+        creditQueries,
+        (data, query) => parseInt(data as string) == parseInt(query),
+      )
+    )
+      return null;
+
     const organizationQueries = postData.filter(
       query => query.key === "organization",
     );
