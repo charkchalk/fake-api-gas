@@ -29,13 +29,12 @@ export default class CourseService extends Service<RawCourse> {
 
   public isMatch(
     data: string | string[],
-    method: "=" | "!=",
     queries: QueryItem[],
     compareMethod: (data: string | string[], query: string) => boolean,
   ): boolean {
     for (const query of queries) {
       const matches = query.value.map(value => compareMethod(data, value));
-      switch (method) {
+      switch (query.method) {
         case "=":
           if (!matches.includes(true)) return false;
           break;
@@ -63,16 +62,14 @@ export default class CourseService extends Service<RawCourse> {
     const codeQueries = postData.filter(query => query.key === "code");
     if (
       codeQueries.length > 0 &&
-      !this.isMatch(code, "=", codeQueries, (data, query) => data === query)
+      !this.isMatch(code, codeQueries, (data, query) => data === query)
     )
       return null;
 
     const keywordQueries = postData.filter(query => query.key === "keyword");
     if (
       keywordQueries.length > 0 &&
-      !this.isMatch(name, "=", keywordQueries, (data, query) =>
-        data.includes(query),
-      )
+      !this.isMatch(name, keywordQueries, (data, query) => data.includes(query))
     )
       return null;
 
@@ -81,7 +78,6 @@ export default class CourseService extends Service<RawCourse> {
       creditQueries.length > 0 &&
       !this.isMatch(
         credit,
-        "=",
         creditQueries,
         (data, query) => parseInt(data as string) == parseInt(query),
       )
@@ -95,7 +91,6 @@ export default class CourseService extends Service<RawCourse> {
       organizationQueries.length > 0 &&
       !this.isMatch(
         organizationId,
-        "=",
         organizationQueries,
         (data, query) => data === query,
       )
@@ -109,7 +104,6 @@ export default class CourseService extends Service<RawCourse> {
       dateRangeQueries.length > 0 &&
       !this.isMatch(
         dateRangeId,
-        "=",
         dateRangeQueries,
         (data, query) => data === query,
       )
@@ -128,9 +122,7 @@ export default class CourseService extends Service<RawCourse> {
     const hostQueries = postData.filter(query => query.key === "host");
     if (
       hostQueries.length > 0 &&
-      !this.isMatch(hostIds, "=", hostQueries, (data, query) =>
-        data.includes(query),
-      )
+      !this.isMatch(hostIds, hostQueries, (data, query) => data.includes(query))
     )
       return null;
 
@@ -138,9 +130,7 @@ export default class CourseService extends Service<RawCourse> {
     const tagQueries = postData.filter(query => query.key === "tag");
     if (
       tagQueries.length > 0 &&
-      !this.isMatch(tagIds, "=", tagQueries, (data, query) =>
-        data.includes(query),
-      )
+      !this.isMatch(tagIds, tagQueries, (data, query) => data.includes(query))
     )
       return null;
 
@@ -148,7 +138,7 @@ export default class CourseService extends Service<RawCourse> {
     const placeQueries = postData.filter(query => query.key === "place");
     if (
       placeQueries.length > 0 &&
-      !this.isMatch(placeIds, "=", placeQueries, (data, query) =>
+      !this.isMatch(placeIds, placeQueries, (data, query) =>
         data.includes(query),
       )
     )
@@ -160,7 +150,7 @@ export default class CourseService extends Service<RawCourse> {
     );
     if (
       timeRangeQueries.length > 0 &&
-      !this.isMatch(timeRangeIds, "=", timeRangeQueries, (data, query) =>
+      !this.isMatch(timeRangeIds, timeRangeQueries, (data, query) =>
         data.includes(query),
       )
     )
