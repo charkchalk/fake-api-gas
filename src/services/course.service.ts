@@ -60,6 +60,13 @@ export default class CourseService extends Service<RawCourse> {
       link,
     ] = data;
 
+    const codeQueries = postData.filter(query => query.key === "code");
+    if (
+      codeQueries.length > 0 &&
+      !this.isMatch(code, "=", codeQueries, (data, query) => data === query)
+    )
+      return null;
+
     const keywordQueries = postData.filter(query => query.key === "keyword");
     if (
       keywordQueries.length > 0 &&
