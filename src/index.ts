@@ -10,7 +10,7 @@ import ServiceManager from "./service.manager";
 //     },
 //     postData: {
 //       contents:
-//         '[{"key":"teacher","method":"=","value":["097648ba-6a56-44e3-a1f0-c240a26408bd","6689bc50-4aa5-43f4-863c-3aa4fc3f7849"]}]',
+//         '[{"key":"host","method":"=","value":["097648ba-6a56-44e3-a1f0-c240a26408bd","6689bc50-4aa5-43f4-863c-3aa4fc3f7849"]}]',
 //     },
 //   } as unknown as GoogleAppsScript.Events.DoPost);
 // };

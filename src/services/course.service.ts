@@ -72,14 +72,14 @@ export default class CourseService extends Service<RawCourse> {
       .get(dateRangeId);
     const hostIds = this.getHostIds(courseId);
 
-    const teacherQueries = postData.filter(query => query.key === "teacher");
-    if (teacherQueries.length > 0) {
-      for (const query of teacherQueries) {
+    const hostQueries = postData.filter(query => query.key === "host");
+    if (hostQueries.length > 0) {
+      for (const query of hostQueries) {
         const matches = query.value.map(value => hostIds.includes(value));
-        // Logger.log("teacher queries: %s", query.value);
-        // Logger.log("teachers: %s", hostIds);
+        // Logger.log("host queries: %s", query.value);
+        // Logger.log("hosts: %s", hostIds);
         // Logger.log(
-        //   "teacher result: (Drop: %s) %s",
+        //   "host result: (Drop: %s) %s",
         //   query.method == "="
         //     ? !matches.includes(true)
         //     : matches.includes(true),
