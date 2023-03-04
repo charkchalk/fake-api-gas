@@ -44,14 +44,6 @@ export default class CourseService extends Service<RawCourse> {
     if (keywordQueries.length > 0) {
       for (const query of keywordQueries) {
         const matches = query.value.map(value => name.includes(value));
-        // Logger.log("keyword queries: %s", query.value);
-        // Logger.log(
-        //   "keyword result: (Drop: %s) %s",
-        //   query.method == "="
-        //     ? !matches.includes(true)
-        //     : matches.includes(true),
-        //   matches,
-        // );
         switch (query.method) {
           case "=":
             if (!matches.includes(true)) return null;
@@ -76,15 +68,6 @@ export default class CourseService extends Service<RawCourse> {
     if (hostQueries.length > 0) {
       for (const query of hostQueries) {
         const matches = query.value.map(value => hostIds.includes(value));
-        // Logger.log("host queries: %s", query.value);
-        // Logger.log("hosts: %s", hostIds);
-        // Logger.log(
-        //   "host result: (Drop: %s) %s",
-        //   query.method == "="
-        //     ? !matches.includes(true)
-        //     : matches.includes(true),
-        //   matches,
-        // );
         switch (query.method) {
           case "=":
             if (!matches.includes(true)) return null;

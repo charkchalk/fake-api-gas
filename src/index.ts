@@ -1,20 +1,6 @@
 import * as Route from "route-parser";
 import ServiceManager from "./service.manager";
 
-// global.test = function (): void {
-//   doPost({
-//     parameter: {
-//       path: "course/search",
-//       size: 20,
-//       page: 1,
-//     },
-//     postData: {
-//       contents:
-//         '[{"key":"host","method":"=","value":["097648ba-6a56-44e3-a1f0-c240a26408bd","6689bc50-4aa5-43f4-863c-3aa4fc3f7849"]}]',
-//     },
-//   } as unknown as GoogleAppsScript.Events.DoPost);
-// };
-
 global.doGet = function (
   event: GoogleAppsScript.Events.DoGet,
 ): GoogleAppsScript.Content.TextOutput {
