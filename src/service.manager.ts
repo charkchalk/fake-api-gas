@@ -10,6 +10,7 @@ import CoursesPlacesRelationService from "./relation-services/courses-places.rel
 import CoursesTimeRangesRelationService from "./relation-services/courses-timeRanges.relation-service";
 import Service from "./services/service";
 import CourseService from "./services/course.service";
+import CoursesTagsRelationService from "./relation-services/courses-tags.relation-service";
 
 export default class ServiceManager {
   public services: Service[] = [];
@@ -27,6 +28,7 @@ export default class ServiceManager {
     this.relationServices.push(new CoursesPersonsRelationService());
     this.relationServices.push(new CoursesPlacesRelationService());
     this.relationServices.push(new CoursesTimeRangesRelationService());
+    this.relationServices.push(new CoursesTagsRelationService());
   }
 
   public getService<T>(name: string): Service<T> {

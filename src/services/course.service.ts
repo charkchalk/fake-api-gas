@@ -115,6 +115,16 @@ export default class CourseService extends Service<RawCourse> {
     )
       return null;
 
+    const tagIds = this.getTagIds(courseId);
+    const tagQueries = postData.filter(query => query.key === "tag");
+    if (
+      tagQueries.length > 0 &&
+      !this.isMatch(tagIds, "=", tagQueries, (data, query) =>
+        data.includes(query),
+      )
+    )
+      return null;
+
     const placeIds = this.getPlaceIds(courseId);
     const placeQueries = postData.filter(query => query.key === "place");
     if (
@@ -137,6 +147,7 @@ export default class CourseService extends Service<RawCourse> {
     )
       return null;
 
+    const tags = this.getTags(tagIds);
     const hosts = this.getHosts(hostIds);
     const places = this.getPlaces(placeIds);
     const timeRanges = this.getTimeRanges(timeRangeIds);
@@ -147,6 +158,7 @@ export default class CourseService extends Service<RawCourse> {
       name,
       description,
       type,
+      tags,
       credit: parseInt(credit, 10),
       organization,
       dateRange,
@@ -155,6 +167,23 @@ export default class CourseService extends Service<RawCourse> {
       places,
       timeRanges,
     };
+  }
+
+  public getTagIds(courseId: string): string[] {
+    const keys = this.serviceManager
+      .getRelationService("Courses-Tags")
+      .getBy("Course", courseId);
+
+    return keys.map(key => key.Tag);
+  }
+
+  public getTags(tagIds: string[]): RawTag[] {
+    const tagService = this.serviceManager.getService<RawTag>("Tags");
+    const tags = tagIds
+      .map(timeRangeId => tagService.get(timeRangeId))
+      .filter(timeRange => !!timeRange);
+
+    return tags as RawTag[];
   }
 
   private getHostIds(courseId: string): string[] {

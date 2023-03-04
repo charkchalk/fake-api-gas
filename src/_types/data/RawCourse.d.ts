@@ -9,6 +9,7 @@ interface RawCourse {
   description: string;
   /** 修課類型 */
   type: RawTag | null;
+  tags: RawTag[];
   /** 學分數 */
   credit: number;
   /** 開課單位 */
