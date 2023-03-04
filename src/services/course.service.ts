@@ -115,8 +115,18 @@ export default class CourseService extends Service<RawCourse> {
     )
       return null;
 
+    const placeIds = this.getPlaceIds(courseId);
+    const placeQueries = postData.filter(query => query.key === "place");
+    if (
+      placeQueries.length > 0 &&
+      !this.isMatch(placeIds, "=", placeQueries, (data, query) =>
+        data.includes(query),
+      )
+    )
+      return null;
+
     const hosts = this.getHosts(hostIds);
-    const places = this.getPlaces(courseId);
+    const places = this.getPlaces(placeIds);
     const timeRanges = this.getTimeRanges(courseId);
 
     return {
@@ -160,9 +170,8 @@ export default class CourseService extends Service<RawCourse> {
     return keys.map(key => key.Place);
   }
 
-  public getPlaces(courseId: string): RawPlace[] {
+  public getPlaces(placeIds: string[]): RawPlace[] {
     const placeService = this.serviceManager.getService<RawPlace>("Places");
-    const placeIds = this.getPlaceIds(courseId);
     const places = placeIds
       .map(placeId => placeService.get(placeId))
       .filter(place => !!place);
