@@ -27,6 +27,26 @@ export default class CourseService extends Service<RawCourse> {
     return data[2] !== "";
   }
 
+  public isMatch(
+    data: string | string[],
+    method: "=" | "!=",
+    queries: QueryItem[],
+    compareMethod: (data: string | string[], query: string) => boolean,
+  ): boolean {
+    for (const query of queries) {
+      const matches = query.value.map(value => compareMethod(data, value));
+      switch (method) {
+        case "=":
+          if (!matches.includes(true)) return false;
+          break;
+        case "!=":
+          if (matches.includes(true)) return false;
+          break;
+      }
+    }
+    return true;
+  }
+
   public buildData(data: string[], postData: QueryItem[]): RawCourse | null {
     const [
       courseId,
@@ -41,19 +61,13 @@ export default class CourseService extends Service<RawCourse> {
     ] = data;
 
     const keywordQueries = postData.filter(query => query.key === "keyword");
-    if (keywordQueries.length > 0) {
-      for (const query of keywordQueries) {
-        const matches = query.value.map(value => name.includes(value));
-        switch (query.method) {
-          case "=":
-            if (!matches.includes(true)) return null;
-            break;
-          case "!=":
-            if (matches.includes(true)) return null;
-            break;
-        }
-      }
-    }
+    if (
+      keywordQueries.length > 0 &&
+      !this.isMatch(name, "=", keywordQueries, (data, query) =>
+        data.includes(query),
+      )
+    )
+      return null;
 
     const type = this.serviceManager.getService<RawTag>("Tags").get(typeId);
     const organization = this.serviceManager
@@ -62,22 +76,16 @@ export default class CourseService extends Service<RawCourse> {
     const dateRange = this.serviceManager
       .getService<RawDateRange>("DateRanges")
       .get(dateRangeId);
-    const hostIds = this.getHostIds(courseId);
 
+    const hostIds = this.getHostIds(courseId);
     const hostQueries = postData.filter(query => query.key === "host");
-    if (hostQueries.length > 0) {
-      for (const query of hostQueries) {
-        const matches = query.value.map(value => hostIds.includes(value));
-        switch (query.method) {
-          case "=":
-            if (!matches.includes(true)) return null;
-            break;
-          case "!=":
-            if (matches.includes(true)) return null;
-            break;
-        }
-      }
-    }
+    if (
+      hostQueries.length > 0 &&
+      !this.isMatch(hostIds, "=", hostQueries, (data, query) =>
+        data.includes(query),
+      )
+    )
+      return null;
 
     const hosts = this.getHosts(hostIds);
     const places = this.getPlaces(courseId);
