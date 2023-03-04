@@ -47,6 +47,5 @@ export default abstract class Service<T = unknown> {
   }
 
   public abstract matches(data: string[], value: string): boolean;
-  public abstract isDataValid(data: string[]): boolean;
   public abstract buildData(data: string[], ..._params: unknown[]): T | null;
 }

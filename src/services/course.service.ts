@@ -27,10 +27,6 @@ export default class CourseService extends Service<RawCourse> {
     return courses;
   }
 
-  public isDataValid(data: string[]): boolean {
-    return data[2] !== "";
-  }
-
   public isMatch(
     data: string | string[],
     queries: QueryItem[],

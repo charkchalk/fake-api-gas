@@ -13,10 +13,6 @@ export default class TimeRangeService extends Service<RawTimeRange> {
     );
   }
 
-  public isDataValid(data: string[]): boolean {
-    return data.every(value => value !== "");
-  }
-
   public buildData(data: string[]): RawTimeRange {
     const [id, weekday, start_time, end_time] = data;
     const day = weekday as Weekday;

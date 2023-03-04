@@ -9,10 +9,6 @@ export default class PlaceService extends Service<RawPlace> {
     return data[1].toLowerCase().includes(value.toLowerCase());
   }
 
-  public isDataValid(data: string[]): boolean {
-    return data[1] !== "";
-  }
-
   public buildData(data: string[]): RawPlace {
     const [id, name, parentId] = data;
     const parent = parentId ? this.get(parentId) : null;
