@@ -9,12 +9,21 @@ export default abstract class Service<T = unknown> {
     this.sheet = sheet;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public getAll(pagination: CanPaginate, ..._params: unknown[]): (T | null)[] {
+  public getAll(pagination: CanPaginate, ..._params: unknown[]): (T | null)[];
+  public getAll(
+    pagination: CanPaginate,
+    params: Record<string, string>,
+  ): (T | null)[] {
     const data = this.sheet.getDataRange().getDisplayValues();
     const courses = data.slice(1).map((values, index) => {
       if (index < (pagination.page - 1) * pagination.size) return null;
       if (index >= pagination.page * pagination.size) return null;
+      if (
+        params.keyword &&
+        params.keyword !== "" &&
+        !this.matches(values, params.keyword)
+      )
+        return null;
 
       const data = this.buildData(values);
 
@@ -37,6 +46,7 @@ export default abstract class Service<T = unknown> {
     return this.buildData(row.getDisplayValues()[0]);
   }
 
+  public abstract matches(data: string[], value: string): boolean;
   public abstract isDataValid(data: string[]): boolean;
   public abstract buildData(data: string[], ..._params: unknown[]): T | null;
 }

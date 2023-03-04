@@ -6,6 +6,10 @@ export default class CourseService extends Service<RawCourse> {
     super("Courses");
   }
 
+  public matches(data: string[], value: string): boolean {
+    return data[2].includes(value);
+  }
+
   public getAll(
     pagination: CanPaginate,
     postData: QueryItem[],

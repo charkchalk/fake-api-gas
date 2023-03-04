@@ -10,7 +10,7 @@ global.doGet = function (
       route: "course/:id",
       handler: (
         pagination: CanPaginate,
-        params: { [key: string]: string[] },
+        params: Record<string, string>,
         urlParams: { [k: string]: string },
       ): RawCourse | null => {
         const service = serviceManager.getService<RawCourse>("Courses");
@@ -19,18 +19,10 @@ global.doGet = function (
       },
     },
     {
-      route: "course",
-      handler: (pagination: CanPaginate): (RawCourse | null)[] => {
-        const service = serviceManager.getService<RawCourse>("Courses");
-        const items = service.getAll(pagination);
-        return items;
-      },
-    },
-    {
       route: "range/date/:id",
       handler: (
         pagination: CanPaginate,
-        params: { [key: string]: string[] },
+        params: Record<string, string>,
         urlParams: { [k: string]: string },
       ): RawDateRange | null => {
         const service = serviceManager.getService<RawDateRange>("DateRange");
@@ -40,9 +32,12 @@ global.doGet = function (
     },
     {
       route: "range/date",
-      handler: (pagination: CanPaginate): (RawDateRange | null)[] => {
+      handler: (
+        pagination: CanPaginate,
+        params: Record<string, string>,
+      ): (RawDateRange | null)[] => {
         const service = serviceManager.getService<RawDateRange>("DateRange");
-        const items = service.getAll(pagination);
+        const items = service.getAll(pagination, params);
         return items;
       },
     },
@@ -50,7 +45,7 @@ global.doGet = function (
       route: "organization/:id",
       handler: (
         pagination: CanPaginate,
-        params: { [key: string]: string[] },
+        params: Record<string, string>,
         urlParams: { [k: string]: string },
       ): RawOrganization | null => {
         const service =
@@ -61,10 +56,13 @@ global.doGet = function (
     },
     {
       route: "organization",
-      handler: (pagination: CanPaginate): (RawOrganization | null)[] => {
+      handler: (
+        pagination: CanPaginate,
+        params: Record<string, string>,
+      ): (RawOrganization | null)[] => {
         const service =
           serviceManager.getService<RawOrganization>("Organization");
-        const items = service.getAll(pagination);
+        const items = service.getAll(pagination, params);
         return items;
       },
     },
@@ -72,7 +70,7 @@ global.doGet = function (
       route: "person/:id",
       handler: (
         pagination: CanPaginate,
-        params: { [key: string]: string[] },
+        params: Record<string, string>,
         urlParams: { [k: string]: string },
       ): RawPerson | null => {
         const service = serviceManager.getService<RawPerson>("Persons");
@@ -82,9 +80,12 @@ global.doGet = function (
     },
     {
       route: "person",
-      handler: (pagination: CanPaginate): (RawPerson | null)[] => {
+      handler: (
+        pagination: CanPaginate,
+        params: Record<string, string>,
+      ): (RawPerson | null)[] => {
         const service = serviceManager.getService<RawPerson>("Persons");
-        const items = service.getAll(pagination);
+        const items = service.getAll(pagination, params);
         return items;
       },
     },
@@ -92,7 +93,7 @@ global.doGet = function (
       route: "place/:id",
       handler: (
         pagination: CanPaginate,
-        params: { [key: string]: string[] },
+        params: Record<string, string>,
         urlParams: { [k: string]: string },
       ): RawPlace | null => {
         const service = serviceManager.getService<RawPlace>("Places");
@@ -102,9 +103,12 @@ global.doGet = function (
     },
     {
       route: "place",
-      handler: (pagination: CanPaginate): (RawPlace | null)[] => {
+      handler: (
+        pagination: CanPaginate,
+        params: Record<string, string>,
+      ): (RawPlace | null)[] => {
         const service = serviceManager.getService<RawPlace>("Places");
-        const items = service.getAll(pagination);
+        const items = service.getAll(pagination, params);
         return items;
       },
     },
@@ -112,7 +116,7 @@ global.doGet = function (
       route: "tag/:id",
       handler: (
         pagination: CanPaginate,
-        params: { [key: string]: string[] },
+        params: Record<string, string>,
         urlParams: { [k: string]: string },
       ): RawTag | null => {
         const service = serviceManager.getService<RawTag>("Tags");
@@ -122,9 +126,12 @@ global.doGet = function (
     },
     {
       route: "tag",
-      handler: (pagination: CanPaginate): (RawTag | null)[] => {
+      handler: (
+        pagination: CanPaginate,
+        params: Record<string, string>,
+      ): (RawTag | null)[] => {
         const service = serviceManager.getService<RawTag>("Tags");
-        const items = service.getAll(pagination);
+        const items = service.getAll(pagination, params);
         return items;
       },
     },
@@ -132,7 +139,7 @@ global.doGet = function (
       route: "range/time/:id",
       handler: (
         pagination: CanPaginate,
-        params: { [key: string]: string[] },
+        params: Record<string, string>,
         urlParams: { [k: string]: string },
       ): RawTimeRange | null => {
         const service = serviceManager.getService<RawTimeRange>("TimeRange");
@@ -142,9 +149,12 @@ global.doGet = function (
     },
     {
       route: "range/time",
-      handler: (pagination: CanPaginate): (RawTimeRange | null)[] => {
+      handler: (
+        pagination: CanPaginate,
+        params: Record<string, string>,
+      ): (RawTimeRange | null)[] => {
         const service = serviceManager.getService<RawTimeRange>("TimeRange");
-        const items = service.getAll(pagination);
+        const items = service.getAll(pagination, params);
         return items;
       },
     },
@@ -157,7 +167,7 @@ global.doGet = function (
     const size = parseInt(event.parameter.size ?? 10);
     const page = parseInt(event.parameter.page ?? 1);
 
-    const result = route.handler({ size, page }, event.parameters, match);
+    const result = route.handler({ size, page }, event.parameter, match);
     if (!result) {
       return ContentService.createTextOutput(
         JSON.stringify({
