@@ -13,8 +13,8 @@ export default class PersonService extends Service<RawPerson> {
   }
 
   public buildData(data: string[]): RawPerson {
-    const [id, name, description, link] = data;
+    const [uuid, name, description, link] = data;
 
-    return { id, name, description, link };
+    return { uuid, name, description, link };
   }
 }

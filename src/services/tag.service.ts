@@ -13,10 +13,10 @@ export default class TagService extends Service<RawTag> {
   }
 
   public buildData(data: string[]): RawTag {
-    const [id, name, description] = data;
+    const [uuid, name, description] = data;
 
     return {
-      id,
+      uuid,
       name,
       description,
     };

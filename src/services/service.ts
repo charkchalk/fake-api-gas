@@ -33,11 +33,11 @@ export default abstract class Service<T = unknown> {
     return courses;
   }
 
-  public get(id: string): T | null {
-    if (!id) return null;
+  public get(uuid: string): T | null {
+    if (!uuid) return null;
     const matchCell = this.sheet
       .getRange("A:A")
-      .createTextFinder(id)
+      .createTextFinder(uuid)
       .findNext();
     if (!matchCell) return null;
 

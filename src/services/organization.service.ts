@@ -13,10 +13,10 @@ export default class OrganizationService extends Service<RawOrganization> {
   }
 
   public buildData(data: string[]): RawOrganization {
-    const [id, name, description] = data;
+    const [uuid, name, description] = data;
 
     return {
-      id,
+      uuid,
       name,
       description,
     };

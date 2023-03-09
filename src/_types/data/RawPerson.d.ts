@@ -1,6 +1,6 @@
 interface RawPerson {
   /** 系統流水號 */
-  id: string;
+  uuid: string;
   /** 教授姓名 */
   name: string;
   /** 附註 */

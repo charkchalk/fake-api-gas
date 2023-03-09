@@ -14,11 +14,11 @@ export default class TimeRangeService extends Service<RawTimeRange> {
   }
 
   public buildData(data: string[]): RawTimeRange {
-    const [id, weekday, start_time, end_time] = data;
+    const [uuid, weekday, start_time, end_time] = data;
     const day = weekday as Weekday;
 
     return {
-      id,
+      uuid,
       day,
       start_time,
       end_time,

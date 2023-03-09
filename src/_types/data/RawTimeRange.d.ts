@@ -1,6 +1,6 @@
 interface RawTimeRange {
   /** 系統流水號 */
-  id: string;
+  uuid: string;
   /** 星期 */
   day: Weekday;
   /** 開始時間 */

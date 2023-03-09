@@ -7,26 +7,26 @@ global.doGet = function (
   const serviceManager = new ServiceManager();
   const routes: RouteHandler[] = [
     {
-      route: "course/:id",
+      route: "course/:uuid",
       handler: (
         pagination: CanPaginate,
         params: Record<string, string>,
         urlParams: { [k: string]: string },
       ): RawCourse | null => {
         const service = serviceManager.getService<RawCourse>("Courses");
-        const item = service.get(urlParams.id);
+        const item = service.get(urlParams.uuid);
         return item;
       },
     },
     {
-      route: "range/date/:id",
+      route: "range/date/:uuid",
       handler: (
         pagination: CanPaginate,
         params: Record<string, string>,
         urlParams: { [k: string]: string },
       ): RawDateRange | null => {
         const service = serviceManager.getService<RawDateRange>("DateRange");
-        const item = service.get(urlParams.id);
+        const item = service.get(urlParams.uuid);
         return item;
       },
     },
@@ -42,7 +42,7 @@ global.doGet = function (
       },
     },
     {
-      route: "organization/:id",
+      route: "organization/:uuid",
       handler: (
         pagination: CanPaginate,
         params: Record<string, string>,
@@ -50,7 +50,7 @@ global.doGet = function (
       ): RawOrganization | null => {
         const service =
           serviceManager.getService<RawOrganization>("Organization");
-        const item = service.get(urlParams.id);
+        const item = service.get(urlParams.uuid);
         return item;
       },
     },
@@ -67,14 +67,14 @@ global.doGet = function (
       },
     },
     {
-      route: "person/:id",
+      route: "person/:uuid",
       handler: (
         pagination: CanPaginate,
         params: Record<string, string>,
         urlParams: { [k: string]: string },
       ): RawPerson | null => {
         const service = serviceManager.getService<RawPerson>("Persons");
-        const item = service.get(urlParams.id);
+        const item = service.get(urlParams.uuid);
         return item;
       },
     },
@@ -90,14 +90,14 @@ global.doGet = function (
       },
     },
     {
-      route: "place/:id",
+      route: "place/:uuid",
       handler: (
         pagination: CanPaginate,
         params: Record<string, string>,
         urlParams: { [k: string]: string },
       ): RawPlace | null => {
         const service = serviceManager.getService<RawPlace>("Places");
-        const item = service.get(urlParams.id);
+        const item = service.get(urlParams.uuid);
         return item;
       },
     },
@@ -113,14 +113,14 @@ global.doGet = function (
       },
     },
     {
-      route: "tag/:id",
+      route: "tag/:uuid",
       handler: (
         pagination: CanPaginate,
         params: Record<string, string>,
         urlParams: { [k: string]: string },
       ): RawTag | null => {
         const service = serviceManager.getService<RawTag>("Tags");
-        const item = service.get(urlParams.id);
+        const item = service.get(urlParams.uuid);
         return item;
       },
     },
@@ -136,14 +136,14 @@ global.doGet = function (
       },
     },
     {
-      route: "range/time/:id",
+      route: "range/time/:uuid",
       handler: (
         pagination: CanPaginate,
         params: Record<string, string>,
         urlParams: { [k: string]: string },
       ): RawTimeRange | null => {
         const service = serviceManager.getService<RawTimeRange>("TimeRange");
-        const item = service.get(urlParams.id);
+        const item = service.get(urlParams.uuid);
         return item;
       },
     },

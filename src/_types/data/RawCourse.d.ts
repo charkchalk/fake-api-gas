@@ -1,6 +1,6 @@
 interface RawCourse {
   /** 系統流水號 */
-  id: string;
+  uuid: string;
   /** 選課代號（如果適用） */
   code: string;
   /** 課程名稱 */

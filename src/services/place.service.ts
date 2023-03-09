@@ -10,9 +10,9 @@ export default class PlaceService extends Service<RawPlace> {
   }
 
   public buildData(data: string[]): RawPlace {
-    const [id, name, parentId] = data;
+    const [uuid, name, parentId] = data;
     const parent = parentId ? this.get(parentId) : null;
 
-    return { id, name, parent };
+    return { uuid, name, parent };
   }
 }

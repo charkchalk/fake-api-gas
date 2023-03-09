@@ -162,7 +162,7 @@ export default class CourseService extends Service<RawCourse> {
     const timeRanges = this.getTimeRanges(timeRangeIds);
 
     return {
-      id: courseId,
+      uuid: courseId,
       code,
       name,
       description,

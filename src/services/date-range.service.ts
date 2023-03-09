@@ -15,10 +15,10 @@ export default class DateRangeService extends Service<RawDateRange> {
   }
 
   public buildData(data: string[]): RawDateRange {
-    const [id, name, description, start, end] = data;
+    const [uuid, name, description, start, end] = data;
 
     return {
-      id,
+      uuid,
       name,
       description,
       start,

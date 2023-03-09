@@ -9,7 +9,7 @@ export default abstract class RelationService {
     this.sheet = sheet;
   }
 
-  public getBy(key: string, id: string): Relation[] {
+  public getBy(key: string, uuid: string): Relation[] {
     const matched = this.sheet.getRange("1:1").createTextFinder(key).findNext();
     if (!matched) {
       return [];
@@ -21,7 +21,7 @@ export default abstract class RelationService {
 
     const matchedCells = this.sheet
       .getRange(`${matchedColumn}:${matchedColumn}`)
-      .createTextFinder(id)
+      .createTextFinder(uuid)
       .findAll();
 
     const related: Relation[] = matchedCells.map(cell => {
