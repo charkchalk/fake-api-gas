@@ -5,4 +5,5 @@ interface RawOrganization {
   name: string;
   /** 組織敘述（通常會給學校首頁或 wiki 資訊） */
   description: string;
+  parent?: RawOrganization | null;
 }

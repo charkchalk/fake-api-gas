@@ -13,12 +13,14 @@ export default class OrganizationService extends Service<RawOrganization> {
   }
 
   public buildData(data: string[]): RawOrganization {
-    const [uuid, name, description] = data;
+    const [uuid, name, description, parentId] = data;
+    const parent = parentId ? this.get(parentId) : null;
 
     return {
       uuid,
       name,
       description,
+      parent,
     };
   }
 }
